@@ -18,14 +18,14 @@ class MyApp extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: const Text(
-                    'Wisata Gunung di Batu',
+                    'Yasaka Pagoda (Hokan-ji Temple)',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
                 Text(
-                  'Batu, Malang, Indonesia',
+                  'Kyoto, Jepang',
                   style: TextStyle(
                     color: Colors.grey[500],
                   ),
@@ -53,6 +53,28 @@ class MyApp extends StatelessWidget {
       ],
     );
 
+    Widget textSection = Container(
+      padding: const EdgeInsets.all(32),
+      child: const Text(
+        'Yasaka Pagoda, atau Hokan-ji Temple, adalah salah '
+        'satu ikon terkenal di Kyoto, Prefektur Kyoto, '
+        'Jepang. Pagoda lima tingkat ini terletak di '
+        'kawasan bersejarah Higashiyama yang dikenal '
+        'dengan jalan batu sempit dan rumah kayu '
+        'tradisional bergaya Jepang. Bangunan ini berasal '
+        'dari abad ke-6 dan sering menjadi latar foto '
+        'karena pemandangannya yang menawan, '
+        'terutama saat matahari terbenam. Area di '
+        'sekitarnya menawarkan suasana klasik Jepang '
+        'yang masih terjaga, menjadikannya tujuan '
+        'populer bagi wisatawan yang ingin merasakan '
+        'keindahan dan ketenangan kota tua Kyoto.\n\n'
+        'Satrio Dian Nugroho\n'
+        '2341760113',
+        softWrap: true,
+      ),
+    );
+
     return MaterialApp(
       title: 'Flutter layout: Nama dan NIM Anda',
       home: Scaffold(
@@ -62,13 +84,14 @@ class MyApp extends StatelessWidget {
         body: ListView(
           children: [
             Image.asset(
-              'assets/images/lake.jpg',
+              'assets/images/kyoto.jpg',
               width: 600,
               height: 240,
               fit: BoxFit.cover,
             ),
             titleSection,
             buttonSection,
+            textSection,
           ],
         ),
       ),
