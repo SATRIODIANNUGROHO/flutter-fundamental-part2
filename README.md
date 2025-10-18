@@ -15,3 +15,9 @@ Create a private method named buildButtonColumn() to build a button column conta
 Create a textSection variable containing text in a Container with padding on all sides. Use softWrap: true so that the text adjusts to the width of the screen before moving to the next line.
 
 ![screenshot hello_world](images/4.jpg)
+
+Create a Flutter project named shopping with a structured folder containing the files home_page.dart, item_page.dart, and item.dart for the data model. Use InkWell on the ListView item on the HomePage so that it can move to the ItemPage when pressed.
+
+![screenshot hello_world](images/7.jpg)
+
+![screenshot hello_world](images/8.jpg)
