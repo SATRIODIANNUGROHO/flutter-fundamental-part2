@@ -1,146 +1,245 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-void main() {
-  runApp(MaterialApp(
-    initialRoute: '/',
-    routes: {
-      '/': (context) => const HomePage(),
-      '/item': (context) => const ItemPage(),
-    },
-  ));
+// MODEL ITEM
+class Item {
+  final String name;
+  final String location;
+  final String imagePath;
+  final int stock;
+  final double rating;
+
+  Item({
+    required this.name,
+    required this.location,
+    required this.imagePath,
+    required this.stock,
+    required this.rating,
+  });
 }
 
+// HALAMAN UTAMA
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final List<Item> items = [
+      Item(
+        name: 'Yasaka Pagoda',
+        location: 'Kyoto, Jepang',
+        imagePath: 'assets/images/kyoto.jpg',
+        stock: 12,
+        rating: 4.8,
+      ),
+      Item(
+        name: 'Gunung Fuji',
+        location: 'Yamanashi, Jepang',
+        imagePath: 'assets/images/fuji.jpg',
+        stock: 8,
+        rating: 4.7,
+      ),
+      Item(
+        name: 'Tokyo Tower',
+        location: 'Tokyo, Jepang',
+        imagePath: 'assets/images/tokyo_tower.jpg',
+        stock: 10,
+        rating: 4.9,
+      ),
+      Item(
+        name: 'Osaka Castle',
+        location: 'Osaka, Jepang',
+        imagePath: 'assets/images/osaka_castle.jpg',
+        stock: 6,
+        rating: 4.6,
+      ),
+    ];
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Halaman Utama'),
+        title: const Text('Toko Wisata Jepang'),
+        backgroundColor: Colors.teal,
       ),
-      body: ListView(
-        children: [
-          // InkWell membungkus Card
-          InkWell(
+      body: GridView.builder(
+        padding: const EdgeInsets.all(8),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 8,
+          mainAxisSpacing: 8,
+          childAspectRatio: 0.75,
+        ),
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          final item = items[index];
+          return InkWell(
             onTap: () {
-              Navigator.pushNamed(context, '/item');
+              context.push('/item', extra: item);
             },
             child: Card(
-              margin: const EdgeInsets.all(16),
-              child: ListTile(
-                leading: Image.asset(
-                  'assets/images/kyoto.jpg',
-                  width: 80,
-                  fit: BoxFit.cover,
-                ),
-                title: const Text('Yasaka Pagoda (Hokan-ji Temple)'),
-                subtitle: const Text('Kyoto, Jepang'),
-                trailing: const Icon(Icons.arrow_forward_ios),
+              elevation: 4,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Hero(
+                    tag: item.name,
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(12),
+                      ),
+                      child: Image.asset(
+                        item.imagePath,
+                        height: 120,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          item.name,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          item.location,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text('Stok: ${item.stock}'),
+                        Row(
+                          children: [
+                            const Icon(Icons.star,
+                                color: Colors.orange, size: 16),
+                            Text(item.rating.toString()),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
             ),
-          ),
-        ],
+          );
+        },
+      ),
+      bottomNavigationBar: const Padding(
+        padding: EdgeInsets.all(8),
+        child: Text(
+          'Satrio Dian Nugroho - 2341760113',
+          textAlign: TextAlign.center,
+        ),
       ),
     );
   }
 }
 
+// HALAMAN DETAIL ITEM
 class ItemPage extends StatelessWidget {
-  const ItemPage({super.key});
+  final Item item;
+  const ItemPage({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
-    Widget titleSection = Container(
-      padding: const EdgeInsets.all(32),
-      child: Row(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(item.name),
+        backgroundColor: Colors.teal,
+      ),
+      body: ListView(
         children: [
-          Expanded(
+          Hero(
+            tag: item.name,
+            child: Image.asset(
+              item.imagePath,
+              width: double.infinity,
+              height: 250,
+              fit: BoxFit.cover,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: const Text(
-                    'Yasaka Pagoda (Hokan-ji Temple)',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                Text(
+                  item.name,
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(
-                  'Kyoto, Jepang',
-                  style: TextStyle(color: Colors.grey[500]),
+                const SizedBox(height: 8),
+                Text(item.location,
+                    style: const TextStyle(color: Colors.grey)),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    const Icon(Icons.star, color: Colors.orange),
+                    Text(item.rating.toString()),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text('Stok tersedia: ${item.stock}'),
+                const SizedBox(height: 16),
+                const Text(
+                  'Deskripsi Produk:',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const Text(
+                  'Produk ini merupakan destinasi wisata terkenal yang menawarkan pemandangan indah dan budaya khas Jepang. '
+                  'Tempat ini menjadi tujuan populer wisatawan dari seluruh dunia karena keindahan dan nilai sejarahnya.',
                 ),
               ],
             ),
           ),
-          Icon(Icons.star, color: Colors.red[500]),
-          const Text('41'),
         ],
       ),
-    );
-
-    Color color = Theme.of(context).primaryColor;
-
-    Widget buttonSection = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        _buildButtonColumn(color, Icons.call, 'CALL'),
-        _buildButtonColumn(color, Icons.near_me, 'ROUTE'),
-        _buildButtonColumn(color, Icons.share, 'SHARE'),
-      ],
-    );
-
-    Widget textSection = Container(
-      padding: const EdgeInsets.all(32),
-      child: const Text(
-        'Yasaka Pagoda, atau Hokan-ji Temple, adalah salah satu ikon terkenal di Kyoto, Prefektur Kyoto, Jepang. '
-        'Pagoda lima tingkat ini terletak di kawasan bersejarah Higashiyama yang dikenal dengan jalan batu sempit dan rumah kayu tradisional bergaya Jepang. '
-        'Bangunan ini berasal dari abad ke-6 dan sering menjadi latar foto karena pemandangannya yang menawan, terutama saat matahari terbenam. '
-        'Area di sekitarnya menawarkan suasana klasik Jepang yang masih terjaga, menjadikannya tujuan populer bagi wisatawan yang ingin merasakan keindahan dan ketenangan kota tua Kyoto.\n\n'
-        'Satrio Dian Nugroho\n'
-        '2341760113',
-        softWrap: true,
-      ),
-    );
-
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Satrio Dian Nugroho (2341760113)'),
-      ),
-      body: ListView(
-        children: [
-          Image.asset(
-            'assets/images/kyoto.jpg',
-            width: 600,
-            height: 240,
-            fit: BoxFit.cover,
-          ),
-          titleSection,
-          buttonSection,
-          textSection,
-        ],
-      ),
-    );
-  }
-
-  Column _buildButtonColumn(Color color, IconData icon, String label) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, color: color),
-        Container(
-          margin: const EdgeInsets.only(top: 8),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color: color,
-            ),
-          ),
+      bottomNavigationBar: const Padding(
+        padding: EdgeInsets.all(8),
+        child: Text(
+          'Satrio Dian Nugroho - 2341760113',
+          textAlign: TextAlign.center,
         ),
-      ],
+      ),
     );
   }
+}
+
+// MAIN DENGAN GO_ROUTER
+void main() {
+  final GoRouter router = GoRouter(
+    routes: [
+      GoRoute(
+        path: '/',
+        builder: (context, state) => const HomePage(),
+      ),
+      GoRoute(
+        path: '/item',
+        builder: (context, state) {
+          final item = state.extra as Item;
+          return ItemPage(item: item);
+        },
+      ),
+    ],
+  );
+
+  runApp(MaterialApp.router(
+    debugShowCheckedModeBanner: false,
+    routerConfig: router,
+    title: 'Toko Wisata Jepang',
+    theme: ThemeData(primarySwatch: Colors.teal),
+  ));
 }

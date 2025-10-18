@@ -21,3 +21,15 @@ Create a Flutter project named shopping with a structured folder containing the 
 ![screenshot hello_world](images/7.jpg)
 
 ![screenshot hello_world](images/8.jpg)
+
+Use Navigator.pushNamed with arguments to send data and ModalRoute to read it in ItemPage. Add photos, stock, ratings, display in GridView, use Hero animation, break widgets, include name and student ID in the footer.
+
+![screenshot hello_world](images/13.jpg)
+
+![screenshot hello_world](images/12.jpg)
+
+![screenshot hello_world](images/11.jpg)
+
+![screenshot hello_world](images/10.jpg)
+
+![screenshot hello_world](images/9.jpg)
